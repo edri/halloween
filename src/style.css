@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background-color: #595a5c;
+  overflow: hidden;
+}
+
+.webgl-container {
+  background-color: #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: top 1500ms;
+  z-index: 10;
+}
+
+.webgl-container.out {
+  top: -100vh;
+}
+
+.description-container {
+  background: url(../static/frame/AdobeStock_668935688.jpeg);
+  background-size: cover;
+  height: 100vh;
+}
+
+.webgl-house, .webgl-skull {
+  outline: none;
+}
+
+.scroll-down-button {
+  bottom: 0.3em;
+  color: white;
+  cursor: pointer;
+  font-size: 3.5em;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.scroll-up-button {
+  color: black;
+  cursor: pointer;
+  font-size: 3.5em;
+  left: 50%;
+  position: absolute;
+  top: 0.3em;
+  transform: translateX(-50%);
+  z-index: 0;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Halloween</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <div class="webgl-container">
+      <canvas class="webgl-house"></canvas>
+      <i
+        class="bi bi-chevron-double-down scroll-down-button"
+        onclick="scrollDown()"
+      ></i>
+    </div>
+    <div class="description-container">
+      <canvas class="webgl-skull"></canvas>
+      <i
+        class="bi bi-chevron-double-up scroll-up-button"
+        onclick="scrollUp()"
+      ></i>
+    </div>
+    <!-- <script type="module" src="./three-house.js"></script> -->
+    <script type="module" src="./three-skull.js"></script>
+    <script type="text/javascript" src="./script.js"></script>
+  </body>
+</html>
