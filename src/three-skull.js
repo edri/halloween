@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Timer } from "three/addons/misc/Timer.js";
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
@@ -20,6 +19,7 @@ const scene = new THREE.Scene();
  */
 // instantiate a loader
 const loader = new OBJLoader();
+const skullGroup = new THREE.Group();
 
 // load a resource
 loader.load(
@@ -32,10 +32,17 @@ loader.load(
     for (let i = 0; i < childrenLength; i++) {
       obj.children[0].scale.set(0.17, 0.15, 0.17);
       obj.children[0].rotation.x = -Math.PI * 0.5;
-      obj.children[0].rotation.z = Math.PI * 0.22;
       obj.children[0].position.set(0, -1.5, 0);
-      scene.add(obj.children[0]);
+
+      // if (i === 0) {
+      //   obj.children[0].rotation.x = Math.PI;
+      // }
+
+      skullGroup.add(obj.children[0]);
     }
+
+    new THREE.Box3().setFromObject( skullGroup ).getCenter( skullGroup.position ).multiplyScalar( - 1 );
+    scene.add(skullGroup);
 	},
 	/* // called when loading is in progresses
 	function ( xhr ) {
@@ -91,16 +98,22 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.x = 4;
-camera.position.y = 2;
-camera.position.z = 5;
+camera.position.x = 0;
+camera.position.y = 0;
+camera.position.z = 8;
 scene.add(camera);
 
-// Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
+/**
+ * Mouse
+ */
+window.addEventListener("mousemove", (event) => {
+  // We want values to go from -1 to 1
+  const mouseX = (event.clientX / sizes.width) * 2 - 1;
+  const mouseY = (-event.clientY / sizes.height) * 2 + 1;
 
-
+  skullGroup.rotation.y = mouseX * 0.5;
+  skullGroup.rotation.x = -mouseY * 0.5;
+});
 
 /**
  * Renderer
@@ -120,9 +133,6 @@ const tick = () => {
   // Timer
   timer.update();
   const elapsedTime = timer.getElapsed();
-
-  // Update controls
-  controls.update();
 
   // Render
   renderer.render(scene, camera);
