@@ -1,6 +1,10 @@
 import * as THREE from "three";
-import { Timer } from "three/addons/misc/Timer.js";
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+/**
+ * Loaders
+ */
+const objLoader = new OBJLoader();
 
 /**
  * Base
@@ -17,12 +21,10 @@ const scene = new THREE.Scene();
 /**
  * Model
  */
-// instantiate a loader
-const loader = new OBJLoader();
 const skullGroup = new THREE.Group();
 
 // load a resource
-loader.load(
+objLoader.load(
 	// resource URL
 	'skull/skull.obj',
 	// called when resource is loaded
@@ -58,7 +60,7 @@ loader.load(
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight("#fff", 0.275);
+const ambientLight = new THREE.AmbientLight("#fff", 0.7);
 scene.add(ambientLight);
 
 // Directional light
@@ -119,6 +121,7 @@ window.addEventListener("mousemove", (event) => {
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
+  alpha: true,
   canvas: canvas,
 });
 renderer.setSize(sizes.width, sizes.height);
@@ -127,13 +130,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 /**
  * Animate
  */
-const timer = new Timer();
-
 const tick = () => {
-  // Timer
-  timer.update();
-  const elapsedTime = timer.getElapsed();
-
   // Render
   renderer.render(scene, camera);
 

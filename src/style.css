@@ -23,7 +23,7 @@ body {
 }
 
 .description-container {
-  background: url(../static/frame/AdobeStock_668935688.jpeg);
+  background: url(../static/background/AdobeStock_668935688.jpeg);
   background-size: cover;
   height: 100vh;
 }
@@ -50,5 +50,13 @@ body {
   position: absolute;
   top: 0.3em;
   transform: translateX(-50%);
+  z-index: 0;
+}
+
+.skull-description {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
   z-index: 0;
 }
