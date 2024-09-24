@@ -44,6 +44,8 @@ objLoader.load(
       skullGroup.add(obj.children[0]);
     }
 
+    skullGroup.scale.set(0, 0, 0);
+
     // new THREE.Box3().setFromObject( skullGroup ).getCenter( skullGroup.position ).multiplyScalar( - 1 );
     scene.add(skullGroup);
 	},
@@ -109,13 +111,18 @@ scene.add(camera);
 /**
  * Mouse
  */
-window.addEventListener("mousemove", (event) => {
-  // We want values to go from -1 to 1
-  const mouseX = (event.clientX / sizes.width) * 2 - 1;
-  const mouseY = (-event.clientY / sizes.height) * 2 + 1;
+let loadSkullStepNumber = 0;
 
-  skullGroup.rotation.y = mouseX * 0.5;
-  skullGroup.rotation.x = -mouseY * 0.5;
+window.addEventListener("mousemove", (event) => {
+  // Only move the skull if it has properly been initialized.
+  if (loadSkullStepNumber === 3) {
+    // We want values to go from -1 to 1
+    const mouseX = (event.clientX / sizes.width) * 2 - 1;
+    const mouseY = (-event.clientY / sizes.height) * 2 + 1;
+
+    skullGroup.rotation.y = mouseX * 0.5;
+    skullGroup.rotation.x = -mouseY * 0.5;
+  }
 });
 
 /**
@@ -135,7 +142,7 @@ renderer.setClearColor( 0x000000, 1);
  */
 const timer = new Timer();
 let previousTime = 0;
-let loadSkullStepNumber = 0;
+let skullGroupScaleValue = 0;
 let backgroundAlphaValue = 1;
 
 // Receive this event from the three house script.
@@ -152,11 +159,26 @@ const tick = () => {
 
   switch (loadSkullStepNumber) {
     case 1:
+      // Make the skull bigger and make it rotate.
+      skullGroupScaleValue += deltaTime * 0.5;
+
+      skullGroup.scale.set(skullGroupScaleValue, skullGroupScaleValue, skullGroupScaleValue);
+      skullGroup.rotation.y = 2 * Math.PI * skullGroupScaleValue;
+
+      if (skullGroupScaleValue >= 1) {
+        skullGroup.scale.set(1, 1, 1);
+        skullGroup.rotation.y = 2 * Math.PI;
+        loadSkullStepNumber = 2;
+      }
+
+      break;
+    case 2:
+      // Show the bloody background.
       backgroundAlphaValue -= deltaTime;
       renderer.setClearColor( 0x000000, backgroundAlphaValue);
 
       if (backgroundAlphaValue <= 0) {
-        loadSkullStepNumber = 2;
+        loadSkullStepNumber = 3;
       }
 
       break;

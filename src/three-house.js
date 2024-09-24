@@ -486,6 +486,7 @@ const timer = new Timer();
 let enterInHouseStepNumber = 0;
 
 document.getElementById('enterButton').onclick = () => {
+  document.getElementById('enterButton').style.display = "none"; 
   enterInHouseStepNumber = 1;
 }
 
