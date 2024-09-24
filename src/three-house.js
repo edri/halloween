@@ -483,11 +483,63 @@ sky.material.uniforms["sunPosition"].value.set(0.3, 0.05, -0.95);
  * Animate
  */
 const timer = new Timer();
+let enterInHouseStepNumber = 0;
+
+document.getElementById('enterButton').onclick = () => {
+  enterInHouseStepNumber = 1;
+}
 
 const tick = () => {
   // Timer
   timer.update();
   const elapsedTime = timer.getElapsed();
+
+  switch (enterInHouseStepNumber) {
+    case 1:
+      // Face the door
+      const finalCameraPosition = new THREE.Vector3( 0, 1, 8 );
+      camera.position.lerp(finalCameraPosition, 0.1);
+
+      if (camera.position.z > 7.8) {
+        enterInHouseStepNumber = 2;
+      }
+
+      break;
+    case 2:
+      // Open the door
+      console.log('open the door');
+      enterInHouseStepNumber = 3;
+
+      break;
+    case 3:
+      // Enter the house
+      const finalCameraPosition2 = new THREE.Vector3( 0, 1, 1 );
+      camera.position.lerp(finalCameraPosition2, 0.1);
+
+      camera.rotation.x = Math.PI * 0.5;
+
+      if (camera.position.z < 2) {
+        enterInHouseStepNumber = 4;
+      }
+
+      break;
+    case 4:
+      // Hide the house scene.
+      document.querySelector(".webgl-container").classList.add('hidden');
+
+      setTimeout(() => {
+        enterInHouseStepNumber = 5;
+      }, 1500);
+
+      break;
+    case 5:
+      // Send an event to the three skull script in order for it to take control.
+      var event = new CustomEvent("start-skull-steps-event", {});
+      document.dispatchEvent(event);
+      enterInHouseStepNumber = 6;
+
+      break;
+  }
 
   // Ghost
   const ghost1Angle = elapsedTime * 0.5;

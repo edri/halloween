@@ -14,18 +14,23 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  transition: top 1500ms;
+  opacity: 1;
+  transition: top 1500ms, opacity 1500ms;
   z-index: 10;
 }
 
-.webgl-container.out {
-  top: -100vh;
+.webgl-container.hidden {
+  opacity: 0;
 }
 
 .description-container {
   background: url(../static/background/AdobeStock_668935688.jpeg);
   background-size: cover;
   height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
 }
 
 .webgl-house, .webgl-skull {

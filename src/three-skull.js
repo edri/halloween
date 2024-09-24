@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { Timer } from "three/addons/misc/Timer.js";
 
 /**
  * Loaders
@@ -43,7 +44,7 @@ objLoader.load(
       skullGroup.add(obj.children[0]);
     }
 
-    new THREE.Box3().setFromObject( skullGroup ).getCenter( skullGroup.position ).multiplyScalar( - 1 );
+    // new THREE.Box3().setFromObject( skullGroup ).getCenter( skullGroup.position ).multiplyScalar( - 1 );
     scene.add(skullGroup);
 	},
 	/* // called when loading is in progresses
@@ -126,11 +127,41 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// Set background color
+renderer.setClearColor( 0x000000, 1);
 
 /**
  * Animate
  */
+const timer = new Timer();
+let previousTime = 0;
+let loadSkullStepNumber = 0;
+let backgroundAlphaValue = 1;
+
+// Receive this event from the three house script.
+document.addEventListener("start-skull-steps-event", function(e) {
+  loadSkullStepNumber = 1;
+});
+
 const tick = () => {
+  // Timer
+  timer.update();
+  const elapsedTime = timer.getElapsed();
+  const deltaTime = elapsedTime - previousTime;
+  previousTime = elapsedTime;
+
+  switch (loadSkullStepNumber) {
+    case 1:
+      backgroundAlphaValue -= deltaTime;
+      renderer.setClearColor( 0x000000, backgroundAlphaValue);
+
+      if (backgroundAlphaValue <= 0) {
+        loadSkullStepNumber = 2;
+      }
+
+      break;
+  }
+
   // Render
   renderer.render(scene, camera);
 
