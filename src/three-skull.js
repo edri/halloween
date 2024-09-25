@@ -113,16 +113,28 @@ scene.add(camera);
  */
 let loadSkullStepNumber = 0;
 
-window.addEventListener("mousemove", (event) => {
+const rotateSkullByClientXAndY = (clientX, clientY) => {
   // Only move the skull if it has properly been initialized.
   if (loadSkullStepNumber === 3) {
     // We want values to go from -1 to 1
-    const mouseX = (event.clientX / sizes.width) * 2 - 1;
-    const mouseY = (-event.clientY / sizes.height) * 2 + 1;
+    const mouseX = (clientX / sizes.width) * 2 - 1;
+    const mouseY = (-clientY / sizes.height) * 2 + 1;
 
     skullGroup.rotation.y = mouseX * 0.5;
     skullGroup.rotation.x = -mouseY * 0.5;
   }
+};
+
+window.addEventListener("mousemove", (event) => {
+  rotateSkullByClientXAndY(event.clientX, event.clientY);
+});
+
+window.addEventListener("touchstart", (event) => {
+  rotateSkullByClientXAndY(event.changedTouches['0'].clientX, event.changedTouches['0'].clientY);
+});
+
+window.addEventListener("touchmove", (event) => {
+  rotateSkullByClientXAndY(event.changedTouches['0'].clientX, event.changedTouches['0'].clientY);
 });
 
 /**

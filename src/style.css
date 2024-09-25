@@ -66,14 +66,43 @@ body {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   z-index: 0;
+
+
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgb(152 0 4);
+  border-radius: 0.3em;
+  box-shadow: 3px 3px 10px black;
+  padding: 0.8em;
 }
 
 .skull-description-title {
+  text-shadow: 1px 1px 1px black;
+  color: rgb(152 0 4);
   font-family: 'Halloween Morning';
   margin-bottom: 0.25em;
+  text-align: center;
 }
 
 .skull-description-content {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.7em;
+}
+
+@media only screen and (max-width: 768px) {
+  .skull-description {
+    left: 0.5em;
+    max-height: 75vh;
+    overflow: scroll;
+    padding: 0.5em;
+    transform: translateY(-50%);
+    width: calc(100% - 2em);
+  }
+
+  .skull-description-title {
+    font-size: 1.5em;
+  }
+
+  .skull-description-content {
+    font-size: 0.5em;
+  }
 }

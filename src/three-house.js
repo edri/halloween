@@ -6,6 +6,12 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass, GammaCorrectionShader } from "three/examples/jsm/Addons.js";
 
+const isMobileOrTablet = () => {
+  let check = false;
+  (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+  return check || navigator.userAgentData.mobile;
+}
+
 /**
  * Base
  */
@@ -339,9 +345,15 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.x = 4;
-camera.position.y = 2;
-camera.position.z = 5;
+if (isMobileOrTablet()) {
+  camera.position.x = -5;
+  camera.position.y = 3.5;
+  camera.position.z = 11;
+} else {
+  camera.position.x = 4;
+  camera.position.y = 2;
+  camera.position.z = 5;
+}
 scene.add(camera);
 
 // Controls
@@ -377,49 +389,51 @@ effectComposer.setSize(sizes.width, sizes.height);
 const renderPass = new RenderPass(scene, camera);
 effectComposer.addPass(renderPass);
 
+if (!isMobileOrTablet()) {
 // Displacement pass
-const DisplacementShader = {
-  uniforms: {
-    tDiffuse: { value: null }, // EffectComposer will update this value by putting the previous path texture on it.
-    uTexture: { value: null },
-  },
-  vertexShader: `
-    varying vec2 vUv;
+  const DisplacementShader = {
+    uniforms: {
+      tDiffuse: { value: null }, // EffectComposer will update this value by putting the previous path texture on it.
+      uTexture: { value: null },
+    },
+    vertexShader: `
+      varying vec2 vUv;
 
-    void main() {
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    
-        vUv = uv;
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D tDiffuse; // Contains the last pass texture.
-    uniform sampler2D uTexture;
+      void main() {
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      
+          vUv = uv;
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D tDiffuse; // Contains the last pass texture.
+      uniform sampler2D uTexture;
 
-    varying vec2 vUv;
+      varying vec2 vUv;
 
-    void main() {
-        vec4 textureColor = texture2D(uTexture, vUv);
-        vec4 lastColor = texture2D(tDiffuse, vUv);
+      void main() {
+          vec4 textureColor = texture2D(uTexture, vUv);
+          vec4 lastColor = texture2D(tDiffuse, vUv);
 
-        // Mix the texture color and the last color, according to the alpha value of the texture.
-        vec4 color = mix(lastColor, textureColor, textureColor.a);
+          // Mix the texture color and the last color, according to the alpha value of the texture.
+          vec4 color = mix(lastColor, textureColor, textureColor.a);
 
-        gl_FragColor += color;
-    }
-  `,
-};
-const displacementPass = new ShaderPass(DisplacementShader);
-// displacementPass.material.uniforms.uTime.value = 0;
-displacementPass.material.uniforms.uTexture.value = textureLoader.load(
-  "/frame/AdobeStock_582431478.png"
-);
-effectComposer.addPass(displacementPass);
+          gl_FragColor += color;
+      }
+    `,
+  };
+  const displacementPass = new ShaderPass(DisplacementShader);
+  // displacementPass.material.uniforms.uTime.value = 0;
+  displacementPass.material.uniforms.uTexture.value = textureLoader.load(
+    "/frame/AdobeStock_582431478.png"
+  );
+  effectComposer.addPass(displacementPass);
 
-// Gamma Correction pass
-// This pass must be the last one (except for the anti-aliasing one); it converts the linear encoding to a sRGB enconding in order to fix the darkness of the colors.
-const gammaCorrectionShader = new ShaderPass(GammaCorrectionShader);
-effectComposer.addPass(gammaCorrectionShader);
+  // Gamma Correction pass
+  // This pass must be the last one (except for the anti-aliasing one); it converts the linear encoding to a sRGB enconding in order to fix the darkness of the colors.
+  const gammaCorrectionShader = new ShaderPass(GammaCorrectionShader);
+  effectComposer.addPass(gammaCorrectionShader);
+}
 
 /**
  * Shadows
@@ -504,7 +518,7 @@ const tick = () => {
       const finalCameraPosition = new THREE.Vector3( 0, 1, 8 );
       camera.position.lerp(finalCameraPosition, deltaTime * 1.4);
 
-      if (camera.position.z > 7.8) {
+      if (camera.position.x < 0.2 && camera.position.y < 1.2 && camera.position.z > 7.8) {
         enterInHouseStepNumber = 2;
       }
 
