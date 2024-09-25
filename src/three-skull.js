@@ -146,7 +146,7 @@ let skullGroupScaleValue = 0;
 let backgroundAlphaValue = 1;
 
 // Receive this event from the three house script.
-document.addEventListener("start-skull-steps-event", function(e) {
+document.addEventListener("start-skull-steps-event", (e) => {
   loadSkullStepNumber = 1;
 });
 

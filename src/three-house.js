@@ -502,7 +502,7 @@ const tick = () => {
     case 1:
       // Face the door
       const finalCameraPosition = new THREE.Vector3( 0, 1, 8 );
-      camera.position.lerp(finalCameraPosition, deltaTime);
+      camera.position.lerp(finalCameraPosition, deltaTime * 1.4);
 
       if (camera.position.z > 7.8) {
         enterInHouseStepNumber = 2;
@@ -518,7 +518,7 @@ const tick = () => {
     case 3:
       // Enter the house
       const finalCameraPosition2 = new THREE.Vector3( 0, 1, 1 );
-      camera.position.lerp(finalCameraPosition2, deltaTime);
+      camera.position.lerp(finalCameraPosition2, deltaTime * 1.1);
 
       camera.rotation.x = Math.PI * 0.5;
 
@@ -540,6 +540,8 @@ const tick = () => {
       // Send an event to the three skull script in order for it to take control.
       var event = new CustomEvent("start-skull-steps-event", {});
       document.dispatchEvent(event);
+      document.querySelector(".webgl-container").style.display = 'none';
+
       enterInHouseStepNumber = 6;
 
       break;

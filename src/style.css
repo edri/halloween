@@ -42,7 +42,8 @@ body {
   outline: none;
 }
 
-.scroll-down-button {
+.enter-house-button {
+  box-shadow: 3px 3px 20px black;
   background-color: #000;
   border: 1px solid #e01410;
   border-radius: 10px;
@@ -50,19 +51,29 @@ body {
   color: #e01410;
   cursor: pointer;
   font-family: 'Halloween Morning';
-  font-size: 3.5em;
+  font-size: 4em;
   left: 50%;
+  letter-spacing: 2px;
   padding: 7px 15px;
   position: absolute;
   transform: translateX(-50%);
 }
 
 .skull-description {
-  font-family: 'Halloween Morning';
-  font-size: 2.5em;
+  font-size: 3em;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   z-index: 0;
+}
+
+.skull-description-title {
+  font-family: 'Halloween Morning';
+  margin-bottom: 0.25em;
+}
+
+.skull-description-content {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.7em;
 }
