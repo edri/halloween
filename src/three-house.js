@@ -483,6 +483,7 @@ sky.material.uniforms["sunPosition"].value.set(0.3, 0.05, -0.95);
  * Animate
  */
 const timer = new Timer();
+let previousTime = 0;
 let enterInHouseStepNumber = 0;
 
 document.getElementById('enterButton').onclick = () => {
@@ -494,12 +495,14 @@ const tick = () => {
   // Timer
   timer.update();
   const elapsedTime = timer.getElapsed();
+  const deltaTime = elapsedTime - previousTime;
+  previousTime = elapsedTime;
 
   switch (enterInHouseStepNumber) {
     case 1:
       // Face the door
       const finalCameraPosition = new THREE.Vector3( 0, 1, 8 );
-      camera.position.lerp(finalCameraPosition, 0.1);
+      camera.position.lerp(finalCameraPosition, deltaTime);
 
       if (camera.position.z > 7.8) {
         enterInHouseStepNumber = 2;
@@ -515,7 +518,7 @@ const tick = () => {
     case 3:
       // Enter the house
       const finalCameraPosition2 = new THREE.Vector3( 0, 1, 1 );
-      camera.position.lerp(finalCameraPosition2, 0.1);
+      camera.position.lerp(finalCameraPosition2, deltaTime);
 
       camera.rotation.x = Math.PI * 0.5;
 
