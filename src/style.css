@@ -85,6 +85,38 @@ body {
   font-size: 0.7em;
 }
 
+.loading-bar {
+  background: #ffffff;
+  height: 2px;
+  position: absolute;
+  top: 50%;
+  transform: scaleX(0);
+  transform-origin: top left;
+  transition: transform 0.5s;
+  width: 100%;
+  will-change: transform;
+}
+
+.loading-bar.ended {
+  transition: transform 1.5s ease-in-out;
+}
+
+.loading-overlay {
+  background-color: #000;
+  height: 100vh;
+  left: 0;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  transition: opacity 2000ms;
+  width: 100vw;
+  z-index: 20;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+}
+
 @media only screen and (max-width: 768px) {
   .skull-description {
     left: 0.5em;

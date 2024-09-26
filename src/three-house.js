@@ -13,6 +13,28 @@ const isMobileOrTablet = () => {
 }
 
 /**
+ * Loaders
+ */
+const loadingOverlayElement = document.querySelector(".loading-overlay");
+const loadingBarElement = document.querySelector(".loading-bar");
+
+const loadingManager = new THREE.LoadingManager(
+  // Loaded
+  () => {
+    // Could have been `gsap.delayedCall(0.5, () => {... })`.
+    window.setTimeout(() => {
+      loadingOverlayElement.classList.add("hidden");
+      loadingBarElement.classList.add("ended");
+    }, 500);
+  },
+  // Progress
+  (itemUrl, numberOfLoadedItems, totalNumberOfItems) => {
+    const progressRatio = numberOfLoadedItems / totalNumberOfItems;
+    loadingBarElement.style.transform = `scaleX(${progressRatio})`;
+  }
+);
+
+/**
  * Base
  */
 // Debug
@@ -27,7 +49,7 @@ const scene = new THREE.Scene();
 /**
  * Textures
  */
-const textureLoader = new THREE.TextureLoader();
+const textureLoader = new THREE.TextureLoader(loadingManager);
 
 // Floor
 const floorAlphaTexture = textureLoader.load("./floor/alpha.webp");
@@ -147,7 +169,7 @@ doorColorTexture.colorSpace = THREE.SRGBColorSpace;
 /**
  * House
  */
-// Temporary sphere
+// Floor
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(20, 20, 100, 100),
   new THREE.MeshStandardMaterial({
@@ -166,7 +188,7 @@ const floor = new THREE.Mesh(
 floor.rotation.x = -Math.PI * 0.5;
 scene.add(floor);
 
-// House continer
+// House container
 const house = new THREE.Group();
 scene.add(house);
 
