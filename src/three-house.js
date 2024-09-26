@@ -24,13 +24,17 @@ const loadingManager = new THREE.LoadingManager(
     // Could have been `gsap.delayedCall(0.5, () => {... })`.
     window.setTimeout(() => {
       loadingOverlayElement.classList.add("hidden");
-      loadingBarElement.classList.add("ended");
+
+      window.setTimeout(() => {
+        loadingOverlayElement.style.display = "none";
+      }, 1000);
     }, 500);
   },
   // Progress
   (itemUrl, numberOfLoadedItems, totalNumberOfItems) => {
-    const progressRatio = numberOfLoadedItems / totalNumberOfItems;
-    loadingBarElement.style.transform = `scaleX(${progressRatio})`;
+    const progressRatio = numberOfLoadedItems / totalNumberOfItems * 100;
+    loadingBarElement.style.width = `${progressRatio}%`;
+    loadingBarElement.innerHTML = `${Math.round(progressRatio)}%`;
   }
 );
 
