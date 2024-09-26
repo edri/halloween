@@ -24,40 +24,26 @@ const scene = new THREE.Scene();
  */
 const skullGroup = new THREE.Group();
 
-// load a resource
-objLoader.load(
-	// resource URL
-	'skull/skull.obj',
-	// called when resource is loaded
-	function (obj) {
-    // Success
-    const childrenLength = obj.children.length;
-    for (let i = 0; i < childrenLength; i++) {
-      obj.children[0].scale.set(0.17, 0.15, 0.17);
-      obj.children[0].rotation.x = -Math.PI * 0.5;
-      obj.children[0].position.set(0, -1.5, 0);
+// Receive this event from the three house script.
+document.addEventListener("skull-object", (e) => {
+  const obj = e.detail;
+  const childrenLength = obj.children.length;
+  for (let i = 0; i < childrenLength; i++) {
+    obj.children[0].scale.set(0.17, 0.15, 0.17);
+    obj.children[0].rotation.x = -Math.PI * 0.5;
+    obj.children[0].position.set(0, -1.5, 0);
 
-      // if (i === 0) {
-      //   obj.children[0].rotation.x = Math.PI;
-      // }
+    // if (i === 0) {
+    //   obj.children[0].rotation.x = Math.PI;
+    // }
 
-      skullGroup.add(obj.children[0]);
-    }
+    skullGroup.add(obj.children[0]);
+  }
 
-    skullGroup.scale.set(0, 0, 0);
+  skullGroup.scale.set(0, 0, 0);
 
-    // new THREE.Box3().setFromObject( skullGroup ).getCenter( skullGroup.position ).multiplyScalar( - 1 );
-    scene.add(skullGroup);
-	},
-	/* // called when loading is in progresses
-	function ( xhr ) {
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-	},
-	// called when loading has errors
-	function ( error ) {
-		console.log( 'An error happened' );
-	} */
-);
+  scene.add(skullGroup);
+});
 
 /**
  * Lights
