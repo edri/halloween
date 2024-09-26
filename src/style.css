@@ -148,4 +148,14 @@ body {
   .skull-description-content {
     font-size: 0.5em;
   }
+
+  .loading-container {
+    margin: 0;
+    width: 100%;
+  }
+
+  .loading-title {
+    font-size: 3em;
+    margin-bottom: 0.4em;
+  }
 }
