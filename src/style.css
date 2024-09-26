@@ -95,7 +95,7 @@ body {
 
 .loading-title {
   color: #a50701;
-  font-family: 'Halloween Morning';
+  font-family: 'Halloween Morning', Arial, Helvetica, sans-serif;
   font-size: 5em;
   margin-bottom: 0.4em;
   text-align: center;
