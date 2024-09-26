@@ -6,6 +6,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass, GammaCorrectionShader } from "three/examples/jsm/Addons.js";
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { gsap } from "gsap";
 
 const isMobileOrTablet = () => {
   let check = false;
@@ -160,15 +161,27 @@ graveARMTexture.repeat.set(0.3, 0.4);
 graveNormalTexture.repeat.set(0.3, 0.4);
 
 // Door
-const doorColorTexture = textureLoader.load("./door/color.webp");
-const doorAlphaTexture = textureLoader.load("./door/alpha.webp");
-const doorAmbientOcclusionTexture = textureLoader.load(
-  "./door/ambientOcclusion.webp"
+const doorFrameColorTexture = textureLoader.load("./door/frame/color.jpg");
+const doorFrameAlphaTexture = textureLoader.load("./door/frame/alpha.jpg");
+const doorFrameAmbientOcclusionTexture = textureLoader.load(
+  "./door/frame/ambientOcclusion.jpg"
 );
-const doorHeightTexture = textureLoader.load("./door/height.webp");
-const doorNormalTexture = textureLoader.load("./door/normal.webp");
-const doorMetalnessTexture = textureLoader.load("./door/metalness.webp");
-const doorRoughnessTexture = textureLoader.load("./door/roughness.webp");
+const doorFrameHeightTexture = textureLoader.load("./door/frame/height.jpg");
+const doorFrameNormalTexture = textureLoader.load("./door/frame/normal.jpg");
+const doorFrameMetalnessTexture = textureLoader.load("./door/frame/metalness.jpg");
+const doorFrameRoughnessTexture = textureLoader.load("./door/frame/roughness.jpg");
+
+doorFrameColorTexture.colorSpace = THREE.SRGBColorSpace;
+
+const doorColorTexture = textureLoader.load("./door/door/color.jpg");
+const doorAlphaTexture = textureLoader.load("./door/door/alpha.jpg");
+const doorAmbientOcclusionTexture = textureLoader.load(
+  "./door/door/ambientOcclusion.jpg"
+);
+const doorHeightTexture = textureLoader.load("./door/door/height.jpg");
+const doorNormalTexture = textureLoader.load("./door/door/normal.jpg");
+const doorMetalnessTexture = textureLoader.load("./door/door/metalness.jpg");
+const doorRoughnessTexture = textureLoader.load("./door/door/roughness.jpg");
 
 doorColorTexture.colorSpace = THREE.SRGBColorSpace;
 
@@ -231,9 +244,29 @@ roof.position.y = 2.5 + 0.75;
 house.add(roof);
 
 // Door
+const doorFrame = new THREE.Mesh(
+  new THREE.PlaneGeometry(2.2, 2.2, 100, 100),
+  new THREE.MeshStandardMaterial({
+    map: doorFrameColorTexture,
+    transparent: true,
+    alphaMap: doorFrameAlphaTexture,
+    aoMap: doorFrameAmbientOcclusionTexture,
+    displacementMap: doorFrameHeightTexture,
+    displacementScale: 0.15,
+    displacementBias: -0.04,
+    normalMap: doorFrameNormalTexture,
+    metalnessMap: doorFrameMetalnessTexture,
+    roughnessMap: doorFrameRoughnessTexture,
+  })
+);
+doorFrame.position.y = 1;
+doorFrame.position.z = 2 + 0.019;
+house.add(doorFrame);
+
 const door = new THREE.Mesh(
   new THREE.PlaneGeometry(2.2, 2.2, 100, 100),
   new THREE.MeshStandardMaterial({
+    side: THREE.DoubleSide,
     map: doorColorTexture,
     transparent: true,
     alphaMap: doorAlphaTexture,
@@ -246,8 +279,8 @@ const door = new THREE.Mesh(
     roughnessMap: doorRoughnessTexture,
   })
 );
-door.position.y = 1;
-door.position.z = 2 + 0.019;
+door.position.y = 0.95;
+door.position.z = 2 + 0.029;
 house.add(door);
 
 // Bushes
@@ -551,6 +584,7 @@ sky.material.uniforms["sunPosition"].value.set(0.3, 0.05, -0.95);
 const timer = new Timer();
 let previousTime = 0;
 let enterInHouseStepNumber = 0;
+let isDoorOpening = false;
 
 document.getElementById('enterButton').onclick = () => {
   document.getElementById('enterButton').style.display = "none"; 
@@ -577,11 +611,25 @@ const tick = () => {
       break;
     case 2:
       // Open the door
-      console.log('open the door');
+      gsap.to(door.rotation, {duration: 1, y: -Math.PI * 0.75});
+      gsap.to(door.position, {duration: 1, x: -0.75});
+      gsap.to(door.position, {duration: 1, z: 2 + 0.029 + 0.25});
+
       enterInHouseStepNumber = 3;
+      isDoorOpening = true;
 
       break;
-    case 3:
+      case 3:
+        if (isDoorOpening) {
+          window.setTimeout(() => {
+            enterInHouseStepNumber = 4;
+          }, 1000);
+
+          isDoorOpening = false;
+        }
+
+        break;
+    case 4:
       // Enter the house
       const finalCameraPosition2 = new THREE.Vector3( 0, 1, 1 );
       camera.position.lerp(finalCameraPosition2, deltaTime * 1.1);
@@ -589,26 +637,26 @@ const tick = () => {
       camera.rotation.x = Math.PI * 0.5;
 
       if (camera.position.z < 2) {
-        enterInHouseStepNumber = 4;
+        enterInHouseStepNumber = 5;
       }
 
       break;
-    case 4:
+    case 5:
       // Hide the house scene.
       document.querySelector(".webgl-container").classList.add('hidden');
 
       setTimeout(() => {
-        enterInHouseStepNumber = 5;
+        enterInHouseStepNumber = 6;
       }, 1500);
 
       break;
-    case 5:
+    case 6:
       // Send an event to the three skull script in order for it to take control.
       var event = new CustomEvent("start-skull-steps-event", {});
       document.dispatchEvent(event);
       document.querySelector(".webgl-container").style.display = 'none';
 
-      enterInHouseStepNumber = 6;
+      enterInHouseStepNumber = 7;
 
       break;
   }
