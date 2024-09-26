@@ -215,6 +215,7 @@ scene.add(house);
 const walls = new THREE.Mesh(
   new THREE.BoxGeometry(4, 2.5, 4, 100, 100),
   new THREE.MeshStandardMaterial({
+    side: THREE.FrontSide,
     map: wallColorTexture,
     aoMap: wallARMTexture,
     roughnessMap: wallARMTexture,
@@ -227,6 +228,19 @@ const walls = new THREE.Mesh(
 );
 walls.position.y += 1.25;
 house.add(walls);
+
+// Walls inside the house
+const inside = new THREE.Mesh(
+  new THREE.BoxGeometry(4, 2, 4, 100, 100),
+  new THREE.MeshStandardMaterial({
+    side: THREE.BackSide,
+    color: 0x000000,
+    roughness: 1,
+    metalness: 0,
+  })
+);
+inside.position.y += 1.45;
+scene.add(inside);
 
 // Roof
 const roof = new THREE.Mesh(
@@ -260,7 +274,7 @@ const doorFrame = new THREE.Mesh(
   })
 );
 doorFrame.position.y = 1;
-doorFrame.position.z = 2 + 0.019;
+doorFrame.position.z = 2 + 0.01;
 house.add(doorFrame);
 
 const door = new THREE.Mesh(
@@ -280,7 +294,7 @@ const door = new THREE.Mesh(
   })
 );
 door.position.y = 0.95;
-door.position.z = 2 + 0.029;
+door.position.z = 2 + 0.02;
 house.add(door);
 
 // Bushes
@@ -636,7 +650,7 @@ const tick = () => {
 
       camera.rotation.x = Math.PI * 0.5;
 
-      if (camera.position.z < 2) {
+      if (camera.position.z < 2.3) {
         enterInHouseStepNumber = 5;
       }
 
