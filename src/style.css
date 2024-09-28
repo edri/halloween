@@ -1,6 +1,12 @@
+/* TODO Miguel */
 @font-face {
   font-family: 'Halloween Morning';
   src: url('../static/fonts/Halloween Morning.ttf');
+}
+
+@font-face {
+  font-family: 'Alice in Wonderland';
+  src: url('../static/fonts/Alice_in_Wonderland_3.ttf');
 }
 
 * {
@@ -75,14 +81,26 @@ body {
 .skull-description-title {
   color: #a50701;
   font-family: 'Halloween Morning';
-  margin-bottom: 0.25em;
+  letter-spacing: 2px;
+  margin-bottom: 0.5em;
   text-align: center;
   text-shadow: 1px 1px 1px black;
 }
 
 .skull-description-content {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.7em;
+  color: #4c0001;
+  font-family: 'Alice in Wonderland', serif;
+  font-size: 0.6em;
+  line-height: 1em;
+}
+
+.skull-description-content > p:not(:last-child),
+.mandatory-costume {
+  margin-bottom: 1em;
+}
+
+.skull-description-content .price {
+  line-height: 1.5em;
 }
 
 .loading-container {
@@ -142,11 +160,16 @@ body {
   }
 
   .skull-description-title {
-    font-size: 1.5em;
+    font-size: 11vw;
   }
 
   .skull-description-content {
-    font-size: 0.5em;
+    font-size: 0.42em;
+  }
+
+  .skull-description-content > p:not(:last-child),
+  .mandatory-costume {
+    margin-bottom: 0.75em;
   }
 
   .loading-container {

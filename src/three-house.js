@@ -670,6 +670,41 @@ const tick = () => {
       document.dispatchEvent(event);
       document.querySelector(".webgl-container").style.display = 'none';
 
+      // Clear scene
+      scene.remove(floor);
+      floor.geometry.dispose();
+      floor.material.dispose();
+
+      scene.remove(house);
+      walls.geometry.dispose();
+      walls.material.dispose();
+      roof.geometry.dispose();
+      roof.material.dispose();
+      doorFrame.geometry.dispose();
+      doorFrame.material.dispose();
+      door.geometry.dispose();
+      door.material.dispose();
+      bush1.geometry.dispose();
+      bush1.material.dispose();
+      bush2.geometry.dispose();
+      bush2.material.dispose();
+      bush3.geometry.dispose();
+      bush3.material.dispose();
+      bush4.geometry.dispose();
+      bush4.material.dispose();
+
+      scene.remove(inside);
+      inside.geometry.dispose();
+      inside.material.dispose();
+
+      scene.remove(graves);
+      for (const grave of graves.children) {
+        grave.geometry.dispose();
+        grave.material.dispose();
+      }
+
+      scene.remove(sky);
+
       enterInHouseStepNumber = 7;
 
       break;
