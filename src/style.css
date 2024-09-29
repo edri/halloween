@@ -99,6 +99,7 @@ body {
   font-size: 0.6em;
   font-weight: 900;
   line-height: 0.8em;
+  text-align: justify;
 }
 
 .skull-description-content > p:not(:last-child),
@@ -176,6 +177,7 @@ body {
 
   .skull-description-content {
     font-size: 0.45em;
+    text-align: center;
   }
 
   .skull-description-content > p:not(:last-child),
@@ -185,6 +187,7 @@ body {
 
   .skull-description-content div {
     line-height: 1.4em;
+    text-align: center;
   }
 
   .loading-container {
