@@ -161,27 +161,27 @@ graveARMTexture.repeat.set(0.3, 0.4);
 graveNormalTexture.repeat.set(0.3, 0.4);
 
 // Door
-const doorFrameColorTexture = textureLoader.load("./door/frame/color.jpg");
-const doorFrameAlphaTexture = textureLoader.load("./door/frame/alpha.jpg");
+const doorFrameColorTexture = textureLoader.load("./door/frame/color.webp");
+const doorFrameAlphaTexture = textureLoader.load("./door/frame/alpha.webp");
 const doorFrameAmbientOcclusionTexture = textureLoader.load(
-  "./door/frame/ambientOcclusion.jpg"
+  "./door/frame/ambientOcclusion.webp"
 );
-const doorFrameHeightTexture = textureLoader.load("./door/frame/height.jpg");
-const doorFrameNormalTexture = textureLoader.load("./door/frame/normal.jpg");
-const doorFrameMetalnessTexture = textureLoader.load("./door/frame/metalness.jpg");
-const doorFrameRoughnessTexture = textureLoader.load("./door/frame/roughness.jpg");
+const doorFrameHeightTexture = textureLoader.load("./door/frame/height.webp");
+const doorFrameNormalTexture = textureLoader.load("./door/frame/normal.webp");
+const doorFrameMetalnessTexture = textureLoader.load("./door/frame/metalness.webp");
+const doorFrameRoughnessTexture = textureLoader.load("./door/frame/roughness.webp");
 
 doorFrameColorTexture.colorSpace = THREE.SRGBColorSpace;
 
-const doorColorTexture = textureLoader.load("./door/door/color.jpg");
-const doorAlphaTexture = textureLoader.load("./door/door/alpha.jpg");
+const doorColorTexture = textureLoader.load("./door/door/color.webp");
+const doorAlphaTexture = textureLoader.load("./door/door/alpha.webp");
 const doorAmbientOcclusionTexture = textureLoader.load(
-  "./door/door/ambientOcclusion.jpg"
+  "./door/door/ambientOcclusion.webp"
 );
-const doorHeightTexture = textureLoader.load("./door/door/height.jpg");
-const doorNormalTexture = textureLoader.load("./door/door/normal.jpg");
-const doorMetalnessTexture = textureLoader.load("./door/door/metalness.jpg");
-const doorRoughnessTexture = textureLoader.load("./door/door/roughness.jpg");
+const doorHeightTexture = textureLoader.load("./door/door/height.webp");
+const doorNormalTexture = textureLoader.load("./door/door/normal.webp");
+const doorMetalnessTexture = textureLoader.load("./door/door/metalness.webp");
+const doorRoughnessTexture = textureLoader.load("./door/door/roughness.webp");
 
 doorColorTexture.colorSpace = THREE.SRGBColorSpace;
 
