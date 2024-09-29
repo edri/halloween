@@ -5,6 +5,11 @@
 }
 
 @font-face {
+  font-family: 'Melted Monster';
+  src: url('../static/fonts/Melted Monster.ttf');
+}
+
+@font-face {
   font-family: 'Alice in Wonderland';
   src: url('../static/fonts/Alice_in_Wonderland_3.ttf');
 }
@@ -56,8 +61,8 @@ body {
   bottom: 1em;
   color: #e01410;
   cursor: pointer;
-  font-family: 'Halloween Morning';
-  font-size: 4em;
+  font-family: 'Melted Monster';
+  font-size: 3em;
   left: 50%;
   letter-spacing: 2px;
   padding: 7px 15px;
@@ -70,17 +75,24 @@ body {
   border-radius: 0.3em;
   box-shadow: 3px 3px 10px black;
   font-size: 3em;
+  opacity: 0;
   padding: 0.8em;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  transition: opacity 1500ms;
   z-index: 0;
+}
+
+.skull-description.visible {
+  opacity: 1;
 }
 
 .skull-description-title {
   color: #a50701;
-  font-family: 'Halloween Morning';
+  font-family: 'Melted Monster';
+  font-size: 1.4em;
   letter-spacing: 2px;
   margin-bottom: 0.5em;
   text-align: center;
@@ -89,9 +101,10 @@ body {
 
 .skull-description-content {
   color: #4c0001;
-  font-family: 'Alice in Wonderland', serif;
+  font-family: 'serif', 'SailerTrial-Regular', 'Alice in Wonderland', serif;
   font-size: 0.6em;
-  line-height: 1em;
+  font-weight: 900;
+  line-height: 0.8em;
 }
 
 .skull-description-content > p:not(:last-child),
@@ -99,7 +112,7 @@ body {
   margin-bottom: 1em;
 }
 
-.skull-description-content .price {
+.skull-description-content div {
   line-height: 1.5em;
 }
 
@@ -113,8 +126,8 @@ body {
 
 .loading-title {
   color: #a50701;
-  font-family: 'Halloween Morning', Arial, Helvetica, sans-serif;
-  font-size: 5em;
+  font-family: 'Melted Monster', Arial, Helvetica, sans-serif;
+  font-size: 4em;
   margin-bottom: 0.4em;
   text-align: center;
   text-shadow: 1px 1px 2px white;

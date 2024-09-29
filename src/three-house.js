@@ -599,6 +599,7 @@ const timer = new Timer();
 let previousTime = 0;
 let enterInHouseStepNumber = 0;
 let isDoorOpening = false;
+let isHouseSceneHidding = false;
 
 document.getElementById('enterButton').onclick = () => {
   document.getElementById('enterButton').style.display = "none"; 
@@ -659,9 +660,13 @@ const tick = () => {
       // Hide the house scene.
       document.querySelector(".webgl-container").classList.add('hidden');
 
-      setTimeout(() => {
-        enterInHouseStepNumber = 6;
-      }, 1500);
+      if (!isHouseSceneHidding) {
+        isHouseSceneHidding = true;
+
+        setTimeout(() => {
+          enterInHouseStepNumber = 6;
+        }, 500);
+      }
 
       break;
     case 6:

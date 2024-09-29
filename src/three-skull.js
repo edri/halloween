@@ -101,7 +101,7 @@ let loadSkullStepNumber = 0;
 
 const rotateSkullByClientXAndY = (clientX, clientY) => {
   // Only move the skull if it has properly been initialized.
-  if (loadSkullStepNumber === 3) {
+  if (loadSkullStepNumber === 4) {
     // We want values to go from -1 to 1
     const mouseX = (clientX / sizes.width) * 2 - 1;
     const mouseY = (-clientY / sizes.height) * 2 + 1;
@@ -142,6 +142,7 @@ const timer = new Timer();
 let previousTime = 0;
 let skullGroupScaleValue = 0;
 let backgroundAlphaValue = 1;
+let isTextShowing = false;
 
 // Receive this event from the three house script.
 document.addEventListener("start-skull-steps-event", (e) => {
@@ -170,13 +171,26 @@ const tick = () => {
       }
 
       break;
-    case 2:
-      // Show the bloody background.
-      backgroundAlphaValue -= deltaTime;
-      renderer.setClearColor( 0x000000, backgroundAlphaValue);
+      case 2:
+        // Show the bloody background.
+        backgroundAlphaValue -= deltaTime;
+        renderer.setClearColor( 0x000000, backgroundAlphaValue);
+  
+        if (backgroundAlphaValue <= 0) {
+          loadSkullStepNumber = 3;
+        }
+  
+        break;
+    case 3:
+      // Show the text
+      document.querySelector(".skull-description").classList.add('visible');
 
-      if (backgroundAlphaValue <= 0) {
-        loadSkullStepNumber = 3;
+      if (!isTextShowing) {
+        isTextShowing = true;
+
+        setTimeout(() => {
+          loadSkullStepNumber = 4;
+        }, 1500);
       }
 
       break;
